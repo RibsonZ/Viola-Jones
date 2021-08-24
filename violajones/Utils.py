@@ -98,11 +98,32 @@ def reconstruct(classifiers, img_size):
     return result
 
 
-def load_images(path):
+# def load_images(path):
+#     images = []
+#     for _file in os.listdir(path):
+#         if _file.endswith('.jpg'):#('.png'):
+#             img_arr = np.array(Image.open((os.path.join(path, _file))), dtype=np.float64)
+#             img_arr /= img_arr.max()
+#             images.append(img_arr)
+#     return images
+
+
+def load_images(path, extension, img_size):
+    """
+    Loads images from path, ending in extension, and resizes them to img_size.
+    :param path: String containing path to image directory
+    :type path: string
+    :param extension: String containing file extension
+    :type extension: string
+    :param img_size: Tuple of width and height
+    :type img_size: (int, int)
+    :return: List of image arrays
+    :rtype: list(np.array)
+    """
     images = []
     for _file in os.listdir(path):
-        if _file.endswith('.png'):
-            img_arr = np.array(Image.open((os.path.join(path, _file))), dtype=np.float64)
+        if _file.endswith(extension):
+            img_arr = np.array(Image.open((os.path.join(path, _file))).resize(img_size), dtype=np.float64)
             img_arr /= img_arr.max()
             images.append(img_arr)
     return images

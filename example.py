@@ -8,18 +8,25 @@ if __name__ == "__main__":
     pos_testing_path = 'trainingdata/faces/test'
     neg_testing_path = 'trainingdata/nonfaces/test'
 
-    num_classifiers = 2
+    num_classifiers = 4
     # For performance reasons restricting feature size
-    min_feature_height = 8
-    max_feature_height = 10
-    min_feature_width = 8
-    max_feature_width = 10
+    min_feature_height = 32
+    max_feature_height = 64
+    min_feature_width = 16
+    max_feature_width = 48
+
+    # all images must be the same size
+    img_size = (64, 64)
 
     print('Loading faces..')
-    faces_training = utils.load_images(pos_training_path)
-    faces_ii_training = list(map(ii.to_integral_image, faces_training))
+    faces_training = utils.load_images(pos_training_path, '.jpg', img_size)
+    faces_ii_training = []
+    for face in faces_training:
+        # converts rgb image arrays to grayscale integral image arrays
+        faces_ii_training.append(ii.to_integral_image(face))
+    # faces_ii_training = list(map(ii.to_integral_image, faces_training))
     print('..done. ' + str(len(faces_training)) + ' faces loaded.\n\nLoading non faces..')
-    non_faces_training = utils.load_images(neg_training_path)
+    non_faces_training = utils.load_images(neg_training_path, '.jpg', img_size)
     non_faces_ii_training = list(map(ii.to_integral_image, non_faces_training))
     print('..done. ' + str(len(non_faces_training)) + ' non faces loaded.\n')
 
@@ -27,10 +34,10 @@ if __name__ == "__main__":
     classifiers = ab.learn(faces_ii_training, non_faces_ii_training, num_classifiers, min_feature_height, max_feature_height, min_feature_width, max_feature_width)
 
     print('Loading test faces..')
-    faces_testing = utils.load_images(pos_testing_path)
+    faces_testing = utils.load_images(pos_testing_path, '.jpg', img_size)
     faces_ii_testing = list(map(ii.to_integral_image, faces_testing))
     print('..done. ' + str(len(faces_testing)) + ' faces loaded.\n\nLoading test non faces..')
-    non_faces_testing = utils.load_images(neg_testing_path)
+    non_faces_testing = utils.load_images(neg_testing_path, '.jpg', img_size)
     non_faces_ii_testing = list(map(ii.to_integral_image, non_faces_testing))
     print('..done. ' + str(len(non_faces_testing)) + ' non faces loaded.\n')
 

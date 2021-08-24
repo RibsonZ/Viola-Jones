@@ -23,6 +23,15 @@ def to_integral_image(img_arr):
     :return Integral image for given image
     :rtype: numpy.ndarray
     """
+
+    # 2-axis images - converted to grayscale
+    if len(img_arr.shape) > 2:
+        img_arr_flat = np.zeros(img_arr.shape[:2])
+        for x in range(img_arr.shape[1]):
+            for y in range(img_arr.shape[0]):
+                img_arr_flat[y, x] = np.average(img_arr[y, x])
+    img_arr = img_arr_flat
+
     # an index of -1 refers to the last row/column
     # since row_sum is calculated starting from (0,0),
     # rowSum(x, -1) == 0 holds for all x
